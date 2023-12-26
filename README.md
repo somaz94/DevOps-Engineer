@@ -12,5 +12,10 @@ This document summarizes what DevOps engineers need to study.
 
 <br/>
 
+## Wiki URL
+- https://github.com/somaz94/DevOps-Engineer/wiki
+
+<br/>
+
 ## Reference
 - https://somaz.tistory.com/

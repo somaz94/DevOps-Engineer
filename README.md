@@ -37,3 +37,6 @@ This document summarizes what DevOps engineers need to study.
 - https://github.com/pjhwa/linux-engineers/wiki
 - https://github.com/Han-Kyeol/developer-roadmap-kr-
 - https://somaz.tistory.com/
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

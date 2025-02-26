@@ -6,6 +6,8 @@ on:
       - main  # main 브랜치 변경 시 동기화
     paths-ignore:
       - .github/workflows/*
+  schedule:
+    - cron: "0 10 * * *"  # Runs daily at 10 AM UTC(=KST 19:00)
   workflow_dispatch:
 
 jobs:

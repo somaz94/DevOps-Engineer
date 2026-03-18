@@ -3,11 +3,11 @@ name: Backup GitHub to GitLab
 on:
   push:
     branches:
-      - main  # main 브랜치 변경 시 동기화
+      - main
     paths-ignore:
       - .github/workflows/*
   schedule:
-    - cron: "0 10 * * *"  # Runs daily at 10 AM UTC(=KST 19:00)
+    - cron: "0 10 * * *"
   workflow_dispatch:
 
 jobs:
@@ -15,11 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout GitHub Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
-          fetch-depth: 0  # 전체 히스토리를 가져오도록 설정
-          # lfs: true      # Git LFS 파일도 가져오기
-          
+          fetch-depth: 0
+
       - name: Configure Git
         run: |
           git config --global user.name "GitHub Action"
@@ -27,16 +26,16 @@ jobs:
 
       - name: Create Wiki Directory
         run: mkdir -p wiki
-        
+
       - name: Checkout Wiki Repository
         run: |
           git clone https://github.com/somaz94/DevOps-Engineer.wiki.git temp_wiki
-          
+
       - name: Copy Wiki Content
         run: |
           cp temp_wiki/*.md wiki/
           rm -rf temp_wiki
-          
+
       - name: Check for Changes
         id: git-check
         run: |
@@ -48,21 +47,13 @@ jobs:
         if: steps.git-check.outputs.changes != '0'
         run: |
           git commit -m "Update wiki backup" -a
-          
-      - name: Push to GitLab Mirror
-        env:
-          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
-        run: |
-          git remote add gitlab https://oauth2:${GITLAB_TOKEN}@gitlab.com/backup6695808/DevOps-Engineer.git
-          git push -f --all gitlab  # 모든 브랜치 푸시 (하지만 강제 덮어쓰지는 않음)
-          git push -f --tags gitlab  # 모든 태그 푸시
-        continue-on-error: true
 
-
-
-
-
-
-
-
-
+      - name: Mirror to GitLab
+        uses: somaz94/multi-git-mirror@v1
+        with:
+          targets: |
+            gitlab::https://gitlab.com/backup6695808/DevOps-Engineer.git
+          gitlab_token: ${{ secrets.GITLAB_TOKEN }}
+          mirror_branches: 'all'
+          mirror_tags: 'true'
+          force_push: 'true'

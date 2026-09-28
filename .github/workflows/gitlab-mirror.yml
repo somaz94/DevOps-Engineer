@@ -50,7 +50,7 @@ jobs:
         run: |
           git add wiki/
           git status --porcelain
-          echo "changes=$(git status --porcelain | wc -l)" >> $GITHUB_OUTPUT
+          echo "changes=$(git status --porcelain | wc -l)" >> "$GITHUB_OUTPUT"
 
       - name: Commit Wiki Changes if Any
         if: steps.git-check.outputs.changes != '0'
